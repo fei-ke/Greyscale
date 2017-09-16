@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">灰度</string>
+    <string name="tips_title">没有权限</string>
+    <string name="tips_ok">好的</string>
+    <string name="tips_copy">复制</string>
+    <string name="copy_done">复制成功</string>
+    <string name="tips">在使用之前，你需要使用 adb 命令为该应用申请权限,复制以下命令到电脑上执行\n%1$s</string>
+</resources>
