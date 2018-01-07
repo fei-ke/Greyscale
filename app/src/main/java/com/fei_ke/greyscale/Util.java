@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class Util {
     private static final String PERMISSION = "android.permission.WRITE_SECURE_SETTINGS";
     private static final String COMMAND    = "adb -d shell pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
+    private static final String SU_COMMAND = "su -c pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
 
     private static final String DISPLAY_DALTONIZER_ENABLED = "accessibility_display_daltonizer_enabled";
     private static final String DISPLAY_DALTONIZER         = "accessibility_display_daltonizer";
@@ -24,7 +25,7 @@ public class Util {
     }
 
     public static Dialog createTipsDialog(final Context context) {
-        return new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
+        return new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert)
                 .setTitle(R.string.tips_title)
                 .setMessage(context.getString(R.string.tips, COMMAND))
                 .setNegativeButton(R.string.tips_ok, null)
@@ -35,6 +36,18 @@ public class Util {
                         ClipboardManager manager = (ClipboardManager) context.getSystemService(Service.CLIPBOARD_SERVICE);
                         manager.setPrimaryClip(clipData);
                         Toast.makeText(context, R.string.copy_done, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNeutralButton("root", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            Runtime.getRuntime().exec(SU_COMMAND).waitFor();
+                            toggleGreyscale(context, !isGreyscaleEnable(context));
+                        } catch (Exception e) {
+                            Toast.makeText(context, R.string.root_failure, Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .create();

@@ -4,5 +4,6 @@
     <string name="tips_ok">OK</string>
     <string name="tips_copy">COPY</string>
     <string name="copy_done">Copy Success</string>
-    <string name="tips">Before use this Application, you need to use adb tools to grant permission, copy below command and exec it on a PC\n%1$s</string>
+    <string name="tips">Before use this Application, you need to use adb tools to grant permission, copy below command and exec it on a PC:\n\n%1$s\n\nOr you can use root to grant permission.</string>
+    <string name="root_failure">root permission not granted</string>
 </resources>
