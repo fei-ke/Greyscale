@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class Util {
     private static final String PERMISSION = "android.permission.WRITE_SECURE_SETTINGS";
-    private static final String COMMAND    = "adb -d shell pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
+    private static final String COMMAND    = "adb shell pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
     private static final String SU_COMMAND = "su -c pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
 
     private static final String DISPLAY_DALTONIZER_ENABLED = "accessibility_display_daltonizer_enabled";
