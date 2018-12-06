@@ -12,10 +12,14 @@ import android.content.pm.PackageManager;
 import android.provider.Settings.Secure;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class Util {
     private static final String PERMISSION = "android.permission.WRITE_SECURE_SETTINGS";
     private static final String COMMAND    = "adb shell pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION;
-    private static final String SU_COMMAND = "su -c 'pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION + "'";
+    private static final String SU_COMMAND = "pm grant " + BuildConfig.APPLICATION_ID + " " + PERMISSION ;
 
     private static final String DISPLAY_DALTONIZER_ENABLED = "accessibility_display_daltonizer_enabled";
     private static final String DISPLAY_DALTONIZER         = "accessibility_display_daltonizer";
@@ -42,7 +46,14 @@ public class Util {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            Runtime.getRuntime().exec(SU_COMMAND).waitFor();
+                            Process su = Runtime.getRuntime().exec("su");
+                            DataOutputStream os = new DataOutputStream(su.getOutputStream());
+                            os.writeBytes(SU_COMMAND + "\n");
+                            os.writeBytes("exit\n");
+                            os.close();
+                            su.waitFor();
+                            os.close();
+                            su.destroy();
                             toggleGreyscale(context, !isGreyscaleEnable(context));
                         } catch (Exception e) {
                             Toast.makeText(context, R.string.root_failure, Toast.LENGTH_SHORT).show();
